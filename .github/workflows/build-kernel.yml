@@ -23,8 +23,7 @@ jobs:
         run: |
           git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 aarch64-linux-android-4.9
           git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 arm-linux-androideabi-4.9
-          mkdir clang && curl https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android14-dev/clang-r487747c.tar.gz -RLO && tar -C clang/ -xf clang-*.tar.gz
-
+          git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang
       - name: Pull kernel source
         run: |
           git clone --depth=1 ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} kernel-source
@@ -36,11 +35,23 @@ jobs:
           export PATH=$GITHUB_WORKSPACE/clang/bin:${PATH}
           args="                  ARCH=arm64 \
                                   O=../out \
-                                  ${{ env.BUILD_ARGS }} \
+                                  HEADER_ARCH=arm64 \
+                                  SUBARCH=arm64 \
+                                  CXX=c++ \
+                                  AR=llvm-ar \
+                                  NM=llvm-nm \
+                                  OBJDUMP=llvm-objdump \
+                                  STRIP=llvm-strip \
+                                  READELF=llvm-readelf \
+                                  HOSTCXX=clang++ \
+                                  HOSTAR=llvm-ar \
+                                  LLVM_IAS=1 \
+                                  HOSTCFLAGS="-fuse-ld=lld -Wno-unused-command-line-argument" \
                                   CLANG_TRIPLE=aarch64-linux-gnu- \
                                   CROSS_COMPILE=$GITHUB_WORKSPACE/aarch64-linux-android-4.9/bin/aarch64-linux-android- \
                                   CROSS_COMPILE_ARM32=$GITHUB_WORKSPACE/arm-linux-androideabi-4.9/bin/arm-linux-androideabi- "
           cd kernel-source
+          curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/refs/heads/next/kernel/setup.sh" | bash -s next
           make ${args} ${{ env.KERNEL_CONFIG }}
           make -j$(($(getconf _NPROCESSORS_ONLN) * 2)) ${args}
 
