@@ -24,6 +24,21 @@ jobs:
           git clone --depth=1 https://github.com/P-Salik/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-7.5.git -b master ~/gcc
           git clone --depth=1 https://gitlab.com/LeCmnGend/clang.git clang
           
+      - name: Installing Python For 24.04
+        run: |
+          sudo apt update -y;sudo apt install python3 python-is-python3
+          sudo apt update -y && sudo apt upgrade -y
+          sudo apt install -y build-essential checkinstall libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev
+          wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
+          tar -xvf Python-2.7.18.tgz
+          cd Python-2.7.18
+          ./configure --enable-optimizations
+          make;sudo make install
+          python -V;sleep 15s
+          sudo update-alternatives --install /usr/bin/python python /usr/local/lib/python2.7 1
+          sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 2
+          cd ~/
+          
       - name: Pull kernel source
         run: |
           git clone --depth=1 ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} kernel-source
