@@ -38,6 +38,7 @@ jobs:
           echo -e "done?"
           sleep 5s
           export PATH=$GITHUB_WORKSPACE/clang/bin:${PATH}
+          clang -v
           args="                  ARCH=arm64 \
                                   O=../out \
                                   HEADER_ARCH=arm64 \
