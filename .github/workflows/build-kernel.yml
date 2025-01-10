@@ -33,6 +33,10 @@ jobs:
           export KBUILD_BUILD_USER="${{ github.actor }}"
           export KBUILD_BUILD_HOST="${{ github.run_id }}"
           export LOCALVERSION="-SEKKKS_KERNEL"
+          echo $KBUILD_BUILD_USER
+          echo $KBUILD_BUILD_HOST
+          echo -e "done?"
+          sleep 5s
           export PATH=$GITHUB_WORKSPACE/clang/bin:${PATH}
           args="                  ARCH=arm64 \
                                   O=../out \
