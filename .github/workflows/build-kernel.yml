@@ -59,7 +59,6 @@ jobs:
                                   CROSS_COMPILE=$GITHUB_WORKSPACE/aarch64-linux-android-4.9/bin/aarch64-linux-android- \
                                   CROSS_COMPILE_ARM32=$GITHUB_WORKSPACE/arm-linux-androideabi-4.9/bin/arm-linux-androideabi- "
           cd ~/kernel-source
-          git clone https://github.com/Mayuri-Chan/KernelSU-Next-backup -b next-susfs-4.9 KernelSU-Next
           git clone https://gitlab.com/simonpunk/susfs4ksu.git -b kernel-4.9
           cd susfs4ksu
           cp kernel_patches/fs/* ~/kernel-source/fs/
