@@ -22,8 +22,8 @@ jobs:
       - name: Pull toolchain
         run: |
           sudo apt update;sudo apt install python2 python3 -y
-          git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 ~/gcc64
-          git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 ~/gcc32
+          git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 aarch64-linux-android-4.9
+          git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 arm-linux-androideabi-4.9
           git clone --depth=1 https://github.com/kdrag0n/proton-clang.git ~/clang
           
       - name: Pull kernel source
@@ -39,8 +39,8 @@ jobs:
           echo $KBUILD_BUILD_HOST
           echo -e "done?"
           sleep 5s
-          export PATH=~/clang/bin:${PATH}
-          clang -v
+          export PATH=~/clang/bin:GITHUB_WORKSPACE/aarch64-linux-android-4.9/bin:$GITHUB_WORKSPACE/arm-linux-androideabi-4.9/bin:${PATH}
+          clang -v;gcc -v
           args="                  ARCH=arm64 \
                                   O=~/out \
                                   HEADER_ARCH=arm64 \
@@ -55,8 +55,8 @@ jobs:
                                   HOSTAR=llvm-ar \
                                   LLVM_IAS=1 \
                                   CLANG_TRIPLE=aarch64-linux-gnu- \
-                                  CROSS_COMPILE=~/gcc64/aarch64-linux-android- \
-                                  CROSS_COMPILE_ARM32=~/gcc32/arm-linux-androideabi- "
+                                  CROSS_COMPILE=$GITHUB_WORKSPACE/aarch64-linux-android-4.9/bin/aarch64-linux-android- \
+                                  CROSS_COMPILE_ARM32=$GITHUB_WORKSPACE/arm-linux-androideabi-4.9/bin/arm-linux-androideabi- "
           cd ~/kernel-source
           git clone https://github.com/Mayuri-Chan/KernelSU-Next-backup -b next-susfs-4.9 KernelSU-Next
           git clone https://gitlab.com/simonpunk/susfs4ksu.git -b kernel-4.9
