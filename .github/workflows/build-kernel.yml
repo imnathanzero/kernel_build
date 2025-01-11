@@ -39,7 +39,8 @@ jobs:
           echo $KBUILD_BUILD_HOST
           echo -e "done?"
           sleep 5s
-          export PATH=~/clang/bin:GITHUB_WORKSPACE/aarch64-linux-android-4.9/bin:$GITHUB_WORKSPACE/arm-linux-androideabi-4.9/bin:${PATH}
+          export PATH=~/clang/bin:$GITHUB_WORKSPACE/aarch64-linux-android-4.9/bin:$GITHUB_WORKSPACE/arm-linux-androideabi-4.9/bin:${PATH}
+          echo $PATH
           clang -v;gcc -v
           args="                  ARCH=arm64 \
                                   O=~/out \
