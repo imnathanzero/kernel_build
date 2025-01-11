@@ -59,6 +59,11 @@ jobs:
                                   CROSS_COMPILE_ARM32=$GITHUB_WORKSPACE/arm-linux-androideabi-4.9/bin/arm-linux-androideabi- "
           cd kernel-source
           git clone https://github.com/Mayuri-Chan/KernelSU-Next-backup -b next-susfs-4.9 KernelSU-Next
+          git clone https://gitlab.com/simonpunk/susfs4ksu.git -b kernel-4.9
+          cd susfs4ksu
+          cp kernel_patches/fs/* ~/kernel-source/fs/
+          cp kernel_patches/include/linux/* ~/kernel-source/include/linux/
+          cd ..
           make CC=clang ${args} ${{ env.KERNEL_CONFIG }}
           make CC=clang LLVM=1 -j$(($(getconf _NPROCESSORS_ONLN) * 2)) ${args}
 
