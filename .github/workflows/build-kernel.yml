@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-kernel:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
       - name: Setup environment
@@ -21,10 +21,10 @@ jobs:
 
       - name: Pull toolchain
         run: |
-          sudo apt update;sudo apt install python2 python3 bsdtar -y
+          sudo apt update;sudo apt install python2 python3 -y
           git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 ~/gcc64
           git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 ~/gcc32
-          git clone --depth=1 https://gitlab.com/LeCmnGend/clang.git -b clang-19 ~/clang;wget https://raw.githubusercontent.com/Asteroidd21/gki-builder/refs/heads/master/tc_patch.sh;bash tc_patch.sh ~/clang
+          git clone --depth=1 https://github.com/kdrag0n/proton-clang.git ~/clang
           
       - name: Pull kernel source
         run: |
